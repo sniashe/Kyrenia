@@ -31,6 +31,8 @@ public class Program
 
         app.UseAuthorization();
 
+        app.UseExceptionHandler("/error");
+
         app.MapControllers();
 
         app.Run();
