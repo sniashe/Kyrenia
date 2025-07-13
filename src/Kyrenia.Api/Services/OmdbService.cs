@@ -1,6 +1,7 @@
 ﻿using Kyrenia.Api.Configuration;
 using Kyrenia.Api.DTOs;
 using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 namespace Kyrenia.Api.Services;
 
@@ -19,17 +20,36 @@ public class OmdbService : IOmdbService
     {
         var response = await _httpClient.GetAsync($"{_options.BaseUrl}?apikey={_options.ApiKey}&type=movie&plot=full&i={Uri.EscapeDataString(imdbId)}");
 
-        // 0xTD Process response
+        if (!response.IsSuccessStatusCode)
+        {
+            return new MovieFullDetailsDto();
+        }
 
-        throw new NotImplementedException();
+        var json = await response.Content.ReadAsStringAsync();
+
+        return JsonSerializer.Deserialize<MovieFullDetailsDto>(json) ?? new MovieFullDetailsDto();
     }
 
     public async Task<MovieSearchResultDto> SearchMoviesAsync(string title)
     {
         var response = await _httpClient.GetAsync($"{_options.BaseUrl}?apikey={_options.ApiKey}&type=movie&s={Uri.EscapeDataString(title)}");
 
-        // 0xTD Process response
+        if (!response.IsSuccessStatusCode)
+        {
+            // 0xTD Log the error
+            return new MovieSearchResultDto();
+        }
 
-        throw new NotImplementedException();
+        var json = await response.Content.ReadAsStringAsync();
+        var root = JsonSerializer.Deserialize<JsonElement>(json);
+
+        if (root.TryGetProperty("Search", out var searchResults))
+        {
+            var movies = JsonSerializer.Deserialize<List<MovieDetailsDto>>(searchResults);
+
+            return new MovieSearchResultDto(movies);
+        }
+
+        return new MovieSearchResultDto();
     }
 }
