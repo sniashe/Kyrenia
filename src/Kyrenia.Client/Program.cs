@@ -1,3 +1,4 @@
+using MudBlazor.Services;
 using Kyrenia.Client.Components;
 
 namespace Kyrenia.Client
@@ -11,6 +12,8 @@ namespace Kyrenia.Client
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+
+            builder.Services.AddMudServices();
 
             var app = builder.Build();
 
