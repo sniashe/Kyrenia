@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyrenia.Api", "src\Kyrenia.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyrenia.Client", "src\Kyrenia.Client\Kyrenia.Client.csproj", "{E3945C28-F218-4E0D-B721-A012882F7F64}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyrenia.Contracts", "src\Kyrenia.Contracts\Kyrenia.Contracts.csproj", "{31138A5D-F0B8-4B73-B00A-E082CC59F36B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{E3945C28-F218-4E0D-B721-A012882F7F64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3945C28-F218-4E0D-B721-A012882F7F64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3945C28-F218-4E0D-B721-A012882F7F64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31138A5D-F0B8-4B73-B00A-E082CC59F36B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31138A5D-F0B8-4B73-B00A-E082CC59F36B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31138A5D-F0B8-4B73-B00A-E082CC59F36B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31138A5D-F0B8-4B73-B00A-E082CC59F36B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +36,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9B19778F-E43D-4869-9C2B-D2B873F6F136} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{E3945C28-F218-4E0D-B721-A012882F7F64} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{31138A5D-F0B8-4B73-B00A-E082CC59F36B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EDE145B9-B8DB-4741-8789-496FCB6FEE34}
