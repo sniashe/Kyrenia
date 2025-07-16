@@ -15,6 +15,8 @@ namespace Kyrenia.Client
 
             builder.Services.AddMudServices();
 
+            builder.Services.AddClient(builder.Configuration);
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
