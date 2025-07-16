@@ -1,4 +1,5 @@
 ﻿using Kyrenia.Api.Services;
+using Kyrenia.Contracts.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kyrenia.Api.Controllers;
@@ -14,21 +15,6 @@ public class MovieController : ControllerBase
         _omdbService = omdbService;
     }
 
-    [HttpGet("search")]
-    public async Task<IActionResult> SearchMovies([FromQuery] string title)
-    {
-        if (string.IsNullOrWhiteSpace(title))
-        {
-            return BadRequest("Title must be provided.");
-        }
-
-        var result = await _omdbService.SearchMoviesAsync(title);
-
-        // 0xTD Save search query in repository
-
-        return Ok(result);
-    }
-
     [HttpGet("{imdbId}")]
     public async Task<IActionResult> GetMovieDetails(string imdbId)
     {
@@ -37,8 +23,67 @@ public class MovieController : ControllerBase
             return BadRequest("IMDb ID must be provided.");
         }
 
-        var details = await _omdbService.GetMovieDetailsAsync(imdbId);
+        var omdbResult = await _omdbService.GetMovieDetailsAsync(imdbId);
 
-        return Ok(details);
+        // 0xTD Introduce dedicated mapper class
+        var result = new MediaFullDetailsDto
+        {
+            Title = omdbResult.Title,
+            Year = omdbResult.Year,
+            ExternalId = omdbResult.ImdbID,
+            Poster = omdbResult.Poster,
+            Type = omdbResult.Type,
+            Rated = omdbResult.Rated,
+            Released = omdbResult.Released,
+            Runtime = omdbResult.Runtime,
+            Genre = omdbResult.Genre,
+            Director = omdbResult.Director,
+            Writer = omdbResult.Writer,
+            Actors = omdbResult.Actors,
+            Plot = omdbResult.Plot,
+            Language = omdbResult.Language,
+            Country = omdbResult.Country,
+            Awards = omdbResult.Awards,
+            Ratings = omdbResult.Ratings.Select(r =>
+                new MediaRatingDto
+                {
+                    Source = r.Source,
+                    Value = r.Value,
+                }
+            ),
+            Metascore = omdbResult.Metascore,
+            ImdbRating = omdbResult.ImdbRating,
+            ImdbVotes = omdbResult.ImdbVotes,
+            BoxOffice = omdbResult.BoxOffice
+        };
+
+        return Ok(result);
+    }
+
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchMovies([FromQuery] string title)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+        {
+            return BadRequest("Title must be provided.");
+        }
+
+        var omdbResult = await _omdbService.SearchMoviesAsync(title);
+
+        // 0xTD Introduce dedicated mapper class
+        var result = new MediaSearchResultDto(
+            omdbResult.Movies.Select(m =>
+                new MediaDetailsDto
+                {
+                    Title = m.Title,
+                    Year = m.Year,
+                    ExternalId = m.ImdbID,
+                    Poster = m.Poster,
+                    Type = m.Type
+                }
+            ).ToList()
+        );
+
+        return Ok(result);
     }
 }
