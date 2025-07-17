@@ -22,7 +22,11 @@
 
         var response = await MediaService.SearchMediaAsync(_mediaTitle);
 
-        MediaSearchStore.LatestResult = response;
-        NavigationManager.NavigateTo("/find");
+        MediaSearchStore.SetResult(response);
+
+        if (!NavigationManager.Uri.EndsWith("/find"))
+        {
+            NavigationManager.NavigateTo("find");
+        }
     }
 }
