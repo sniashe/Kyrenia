@@ -1,0 +1,15 @@
+﻿@using Kyrenia.Contracts.DTOs
+
+<MudCard Class="mx-2 my-2" Style="width: 300px;">
+    <MudCardMedia Image="@Media.Poster" Height="400" />
+    <MudCardContent>
+        <MudText Typo="Typo.button">@Media.Title (@Media.Year)</MudText>
+    </MudCardContent>
+</MudCard>
+
+@code {
+
+    [Parameter]
+    [EditorRequired]
+    public MediaDetailsDto Media { get; init; }
+}

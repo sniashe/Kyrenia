@@ -1,4 +1,37 @@
 ﻿@page "/find"
 
-<PageTitle></PageTitle>
+@inject MediaSearchStore MediaSearchStore
 
+@implements IDisposable
+
+<PageTitle>Find - KYRENIA</PageTitle>
+
+@if (MediaSearchStore.LatestResult is not null)
+{
+    <MudGrid>
+        @foreach (var item in MediaSearchStore.LatestResult.Items)
+        {
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MediaCard Media="@item" />
+            </MudItem>
+        }
+    </MudGrid>
+}
+else
+{
+    <MudText>No results to show</MudText>
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        MediaSearchStore.OnLatestResultUpdated += StateHasChanged;
+
+        base.OnInitialized();
+    }
+
+    public void Dispose()
+    {
+        MediaSearchStore.OnLatestResultUpdated -= StateHasChanged;
+    }
+}
