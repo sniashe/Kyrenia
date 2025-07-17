@@ -1,4 +1,39 @@
-﻿@page "/title"
+﻿@using Kyrenia.Contracts.DTOs
 
-<PageTitle></PageTitle>
+@page "/title/{Id}"
 
+@inject IMediaService MediaService
+
+@if (_media is null)
+{
+    <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+}
+else
+{
+    <PageTitle>@_media.Title - KYRENIA</PageTitle>
+
+    <MudPaper Class="pa-4">
+        <MudText Typo="Typo.h5">@_media.Title</MudText>
+        <MudText>@_media.Plot</MudText>
+        <MudDivider Class="my-2" />
+        <MudText>Year: @_media.Year</MudText>
+        <MudText>Rating: @_media.Rated</MudText>
+        <!-- Add more fields as needed -->
+    </MudPaper>
+}
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public string Id { get; init; }
+
+    private MediaFullDetailsDto? _media;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(Id))
+        {
+            _media = await MediaService.GetMediaDetailsAsync(Id);
+        }
+    }
+}
