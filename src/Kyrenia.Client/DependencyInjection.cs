@@ -12,6 +12,10 @@ internal static class DependencyInjection
 
         services.AddHttpClient<IMediaService, MediaService>();
 
+        services.AddScoped<IMediaService, MediaService>();
+
+        services.AddScoped<MediaSearchStore>();
+
         return services;
     }
 }

@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@using Kyrenia.Client.Components.Shared
+
+@inherits LayoutComponentBase
 
 <MudThemeProvider />
 <MudPopoverProvider />
@@ -6,11 +8,7 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="0">
-        <MudSpacer />
-        <MudIconButton Href="https://github.com/sniashe/Kyrenia" Target="_blank"
-            Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" />
-    </MudAppBar>
+    <AppBar></AppBar>
     <MudMainContent>
         @Body
     </MudMainContent>

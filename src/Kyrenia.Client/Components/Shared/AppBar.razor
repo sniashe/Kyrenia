@@ -1,0 +1,28 @@
+﻿@inject IMediaService MediaService
+@inject MediaSearchStore MediaSearchStore
+@inject NavigationManager NavigationManager
+
+<MudAppBar Elevation="0">
+    <MudText Typo="Typo.button" Style="font-size:1.5rem; font-weight:900">kyrenia</MudText>
+    <MudSpacer />
+    <MudTextField @bind-Value="_mediaTitle" OnKeyDown="OnSearchKeyDown"
+                  Placeholder="Search" Immediate="true"
+                  Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search"/>
+    <MudSpacer />
+    <MudIconButton Href="https://github.com/sniashe/Kyrenia" Target="_blank"
+                   Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" />
+</MudAppBar>
+
+@code {
+    private string _mediaTitle = string.Empty;
+
+    private async Task OnSearchKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key != "Enter") return;
+
+        var response = await MediaService.SearchMediaAsync(_mediaTitle);
+
+        MediaSearchStore.LatestResult = response;
+        NavigationManager.NavigateTo("/find");
+    }
+}
