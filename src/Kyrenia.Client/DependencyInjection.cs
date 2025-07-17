@@ -14,7 +14,7 @@ internal static class DependencyInjection
 
         services.AddScoped<IMediaService, MediaService>();
 
-        services.AddScoped<MediaSearchStore>();
+        services.AddSingleton<MediaSearchStore>();
 
         return services;
     }
