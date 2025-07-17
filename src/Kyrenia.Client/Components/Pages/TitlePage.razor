@@ -12,14 +12,20 @@ else
 {
     <PageTitle>@_media.Title - KYRENIA</PageTitle>
 
-    <MudPaper Class="pa-4">
-        <MudText Typo="Typo.h5">@_media.Title</MudText>
-        <MudText>@_media.Plot</MudText>
-        <MudDivider Class="my-2" />
-        <MudText>Year: @_media.Year</MudText>
-        <MudText>Rating: @_media.Rated</MudText>
-        <!-- Add more fields as needed -->
-    </MudPaper>
+    <MudContainer Class="mx-12 my-4">
+        <MudPaper Class="pa-4">
+            <MudText Typo="Typo.h4">@_media.Title</MudText>
+            <MudText Typo="Typo.button">@_media.Year | @_media.Rated | @_media.Runtime</MudText>
+            <MudDivider Class="my-2" />
+            <MudText>@_media.Plot</MudText>
+            <MudDivider Class="my-2" />
+            <MudText>Director: @_media.Director</MudText>
+            <MudDivider Class="my-2" />
+            <MudText>Writers: @_media.Writer</MudText>
+            <MudDivider Class="my-2" />
+            <MudText>Stars: @_media.Actors</MudText>
+        </MudPaper>
+    </MudContainer>
 }
 
 @code {
