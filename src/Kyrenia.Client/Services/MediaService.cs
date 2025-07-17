@@ -24,6 +24,8 @@ public class MediaService : IMediaService
 
     public async Task<MediaSearchResultDto> SearchMediaAsync(string title)
     {
+        if (string.IsNullOrEmpty(title)) return null;
+
         var response = await _httpClient.GetFromJsonAsync<MediaSearchResultDto>($"{_options.BaseUrl}api/movie/search?title={Uri.EscapeDataString(title)}");
 
         return response;
