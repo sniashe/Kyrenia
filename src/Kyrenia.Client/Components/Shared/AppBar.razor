@@ -1,32 +1,45 @@
 ﻿@inject IMediaService MediaService
 @inject MediaSearchStore MediaSearchStore
 @inject NavigationManager NavigationManager
+@inject MediaSearchHistoryService MediaSearchHistoryService
 
 <MudAppBar Elevation="0">
     <MudText Typo="Typo.button" Style="font-size:1.5rem; font-weight:900">kyrenia</MudText>
     <MudSpacer />
-    <MudTextField @bind-Value="_mediaTitle" OnKeyDown="OnSearchKeyDown"
-                  Placeholder="Search" Immediate="true"
-                  Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search"/>
+    <MudAutocomplete Placeholder="Search" @bind-Value="_searchQuery"
+                     SearchFunc="Search" OnKeyDown="OnSearchKeyDown"
+                     ResetValueOnEmptyText="false" Immediate="true"
+                     CoerceValue="true"
+                     Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" />
     <MudSpacer />
     <MudIconButton Href="https://github.com/sniashe/Kyrenia" Target="_blank"
                    Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" />
 </MudAppBar>
 
 @code {
-    private string _mediaTitle = string.Empty;
+    private string _searchQuery = string.Empty;
 
     private async Task OnSearchKeyDown(KeyboardEventArgs e)
     {
         if (e.Key != "Enter") return;
 
-        var response = await MediaService.SearchMediaAsync(_mediaTitle);
+        var response = await MediaService.SearchMediaAsync(_searchQuery);
 
         MediaSearchStore.SetResult(response);
+        MediaSearchHistoryService.AddQuery(_searchQuery);
 
         if (!NavigationManager.Uri.EndsWith("/find"))
         {
             NavigationManager.NavigateTo("find");
         }
+    }
+
+    private async Task<IEnumerable<string>> Search(string value, CancellationToken token)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return MediaSearchHistoryService.GetHistory();
+
+        return MediaSearchHistoryService.GetHistory()
+            .Where(x => x.Contains(value, StringComparison.OrdinalIgnoreCase));
     }
 }
