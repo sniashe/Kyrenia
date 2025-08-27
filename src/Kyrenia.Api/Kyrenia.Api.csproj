@@ -12,7 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Kyrenia.Application\Kyrenia.Application.csproj" />
     <ProjectReference Include="..\Kyrenia.Contracts\Kyrenia.Contracts.csproj" />
+    <ProjectReference Include="..\Kyrenia.Infrastructure\Kyrenia.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
