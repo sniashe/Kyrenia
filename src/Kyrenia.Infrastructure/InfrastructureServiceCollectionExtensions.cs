@@ -8,7 +8,7 @@ public static class InfrastructureServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
-        services.AddSingleton<ITitleProvider, OmdbTitleProvider>();
+        services.AddHttpClient<ITitleProvider, OmdbTitleProvider>();
 
         return services;
     }
