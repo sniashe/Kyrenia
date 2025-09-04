@@ -1,5 +1,4 @@
-﻿using Kyrenia.Api.Services;
-using Kyrenia.Application.Services;
+﻿using Kyrenia.Application.Services;
 using Kyrenia.Contracts.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,12 +8,10 @@ namespace Kyrenia.Api.Controllers;
 [Route("api/[controller]")]
 public class MovieController : ControllerBase
 {
-    private readonly IOmdbService _omdbService;
     private readonly ITitleService _titleService;
 
-    public MovieController(IOmdbService omdbService, ITitleService titleService)
+    public MovieController(ITitleService titleService)
     {
-        _omdbService = omdbService;
         _titleService = titleService;
     }
 
@@ -26,7 +23,6 @@ public class MovieController : ControllerBase
             return BadRequest("IMDb ID must be provided.");
         }
 
-        var omdbResult = await _omdbService.GetMovieDetailsAsync(imdbId);
         var imdbResult = await _titleService.GetByExternalIdAsync(imdbId);
 
         // 0xTD Introduce dedicated mapper class
@@ -72,7 +68,6 @@ public class MovieController : ControllerBase
             return BadRequest("Title must be provided.");
         }
 
-        var omdbResult = await _omdbService.SearchMoviesAsync(title);
         var imdbResult = await _titleService.GetAllAsync(title);
 
         // 0xTD Introduce dedicated mapper class
