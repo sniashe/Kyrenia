@@ -1,4 +1,5 @@
 ﻿using Kyrenia.Api.Services;
+using Kyrenia.Application.Services;
 using Kyrenia.Contracts.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,12 @@ namespace Kyrenia.Api.Controllers;
 public class MovieController : ControllerBase
 {
     private readonly IOmdbService _omdbService;
+    private readonly ITitleService _titleService;
 
-    public MovieController(IOmdbService omdbService)
+    public MovieController(IOmdbService omdbService, ITitleService titleService)
     {
         _omdbService = omdbService;
+        _titleService = titleService;
     }
 
     [HttpGet("{imdbId}")]
@@ -24,37 +27,38 @@ public class MovieController : ControllerBase
         }
 
         var omdbResult = await _omdbService.GetMovieDetailsAsync(imdbId);
+        var imdbResult = await _titleService.GetByExternalIdAsync(imdbId);
 
         // 0xTD Introduce dedicated mapper class
         var result = new MediaFullDetailsDto
         {
-            Title = omdbResult.Title,
-            Year = omdbResult.Year,
-            ExternalId = omdbResult.ImdbID,
-            Poster = omdbResult.Poster,
-            Type = omdbResult.Type,
-            Rated = omdbResult.Rated,
-            Released = omdbResult.Released,
-            Runtime = omdbResult.Runtime,
-            Genre = omdbResult.Genre,
-            Director = omdbResult.Director,
-            Writer = omdbResult.Writer,
-            Actors = omdbResult.Actors,
-            Plot = omdbResult.Plot,
-            Language = omdbResult.Language,
-            Country = omdbResult.Country,
-            Awards = omdbResult.Awards,
-            Ratings = omdbResult.Ratings.Select(r =>
+            Title = imdbResult.Name,
+            Year = imdbResult.Year,
+            ExternalId = imdbResult.ExternalId,
+            Poster = imdbResult.Poster,
+            Type = imdbResult.Type.ToString() ?? string.Empty,
+            Rated = imdbResult.Rated,
+            Released = imdbResult.Released,
+            Runtime = imdbResult.Runtime,
+            Genre = imdbResult.Genre,
+            Director = imdbResult.Director,
+            Writer = imdbResult.Writer,
+            Actors = imdbResult.Actors,
+            Plot = imdbResult.Plot,
+            Language = imdbResult.Language,
+            Country = imdbResult.Country,
+            Awards = imdbResult.Awards,
+            Ratings = imdbResult.Ratings.Select(r =>
                 new MediaRatingDto
                 {
                     Source = r.Source,
                     Value = r.Value,
                 }
             ),
-            Metascore = omdbResult.Metascore,
-            ImdbRating = omdbResult.ImdbRating,
-            ImdbVotes = omdbResult.ImdbVotes,
-            BoxOffice = omdbResult.BoxOffice
+            Metascore = imdbResult.Metascore,
+            ImdbRating = imdbResult.ImdbRating,
+            ImdbVotes = imdbResult.ImdbVotes,
+            BoxOffice = imdbResult.BoxOffice
         };
 
         return Ok(result);
@@ -69,19 +73,20 @@ public class MovieController : ControllerBase
         }
 
         var omdbResult = await _omdbService.SearchMoviesAsync(title);
+        var imdbResult = await _titleService.GetAllAsync(title);
 
         // 0xTD Introduce dedicated mapper class
         var result = new MediaSearchResultDto(
-            omdbResult.Movies.Select(m =>
+            imdbResult.Select(x =>
                 new MediaDetailsDto
                 {
-                    Title = m.Title,
-                    Year = m.Year,
-                    ExternalId = m.ImdbID,
-                    Poster = m.Poster,
-                    Type = m.Type
+                    Title = x.Name,
+                    Year = x.Year,
+                    ExternalId = x.ExternalId,
+                    Poster = x.Poster,
+                    Type = x.Type.ToString() ?? string.Empty
                 }
-            ).ToList()
+            )
         );
 
         return Ok(result);

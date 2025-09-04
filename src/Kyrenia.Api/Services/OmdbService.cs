@@ -18,7 +18,9 @@ public class OmdbService : IOmdbService
 
     public async Task<MovieFullDetailsDto> GetMovieDetailsAsync(string imdbId)
     {
-        var response = await _httpClient.GetAsync($"{_options.BaseUrl}?apikey={_options.ApiKey}&type=movie&plot=full&i={Uri.EscapeDataString(imdbId)}");
+        var query = $"{_options.BaseUrl}?apikey={_options.ApiKey}&type=movie&plot=full&i={Uri.EscapeDataString(imdbId)}";
+
+        var response = await _httpClient.GetAsync(query);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -32,7 +34,9 @@ public class OmdbService : IOmdbService
 
     public async Task<MovieSearchResultDto> SearchMoviesAsync(string title)
     {
-        var response = await _httpClient.GetAsync($"{_options.BaseUrl}?apikey={_options.ApiKey}&type=movie&s={Uri.EscapeDataString(title)}");
+        var query = $"{_options.BaseUrl}?apikey={_options.ApiKey}&type=movie&s={Uri.EscapeDataString(title)}";
+
+        var response = await _httpClient.GetAsync(query);
 
         if (!response.IsSuccessStatusCode)
         {
