@@ -31,6 +31,22 @@ Using [OMDb API](http://www.omdbapi.com) web service, create a web application w
 - Move database into docker container
 - To be added
 
+## Omdb API Key Setup
+
+This app requires an OMDb API key, which is stored securely using **.NET User Secrets** in development.
+
+> ❌ **Do NOT commit your API key to source control.**
+
+### Setup Steps
+
+1. Make sure you have the .NET SDK installed (8.0 or higher).
+
+2. From the `Kyrenia.Api` project directory, run:
+
+```bash
+dotnet user-secrets set "TitleProvider:ApiKey" "your_api_key"
+```
+
 ## Following will be updated and expanded as time comes
 
 ## 🏗️ Architecture
@@ -50,20 +66,3 @@ Kyrenia follows a **modular monolithic** architecture using two separate project
   - Displaying search input and results
   - Calling the API via HTTP
   - Showing movie details
-
----
-
-## 🔐 API Key Setup
-
-This app requires an OMDb API key, which is stored securely using **.NET User Secrets** in development.
-
-> 💡 **Do NOT commit your API key to source control.**
-
-### Step-by-Step
-
-1. Make sure you have the .NET SDK installed (8.0 or higher).
-
-2. From the `Kyrenia.Api` project directory, run:
-
-```bash
-dotnet user-secrets set "OmdbApi:ApiKey" "your_api_key_here"
