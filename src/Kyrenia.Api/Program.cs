@@ -1,3 +1,4 @@
+using Kyrenia.Api.Endpoints;
 using Kyrenia.Application;
 using Kyrenia.Application.Providers;
 using Kyrenia.Infrastructure;
@@ -29,5 +30,6 @@ app.UseAuthorization();
 app.UseExceptionHandler("/error");
 
 app.MapControllers();
+app.MapApiEndpoints();
 
 app.Run();
